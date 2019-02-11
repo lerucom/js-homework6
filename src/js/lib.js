@@ -1,7 +1,7 @@
 export class ReadItem {
     constructor(name, tags, url) {
         this.name = name;
-        this.tags = tags;
+        this.tags = tags.split(',');
         this.url = url;
         this.done = false;
     }
@@ -9,7 +9,6 @@ export class ReadItem {
 
 export class ReadItemList {
     constructor() {
-        //TODO: загружаем localStorage
         const savedItems = JSON.parse(localStorage.getItem('readItemList'));
         if (savedItems !== null) {
             this.items = savedItems;

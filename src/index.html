@@ -15,7 +15,7 @@
     <h2>Homework #6 <span class="badge badge-secondary">Read Later</span></h2>
 </header>
 <main>
-    <div class="container shadow p-2 mb-3 bg-white">
+    <div class="container shadow p-2 mb-2 bg-white">
         <div class="btn-group btn-group-toggle mb-2 shadow" data-toggle="buttons">
             <label class="btn btn-secondary btn-md active">
                 <input type="radio" name="options" id="readTab" autocomplete="off" checked> Read
@@ -28,28 +28,28 @@
             </label>
         </div>
 
-        <form class="d-flex justify-content-between" id="link-add-form">
+        <form class="d-flex justify-content-between my-2" id="link-add-form">
             <input class="shadow p-1 mb-1 mr-2 form-control" type="text" id="link-name" placeholder="Name"
                    name="linkName" autofocus>
             <input class="shadow p-1 mb-1 mr-2 form-control" type="text" id="link-tags" placeholder="#tag1,#tag2,..."
                    name="linkTags">
             <input class="shadow p-1 mb-1 mr-2 form-control" type="text" id="link-url" placeholder="http://"
                    name="linkUrl">
-            <button type="submit" class="w-50 shadow mb-1 btn btn-primary btn-sm btn-block" id="link-add-btn">Add
+            <button type="submit" class="w-50 shadow mb-1 mr-5 btn btn-primary btn-sm btn-block" id="link-add-btn">Add
             </button>
         </form>
 
-        <div class="task-list container shadow p-3 mt-2 bg-white">
-            <ul>
-                <li class="list-group-item bg-light p-3 mb-1 rounded">
+        <!--<div class="task-list container shadow p-3 mt-2 bg-white">-->
+            <ul class="list-group mr-5 my-4" id="list-items">
+                <!--<li class="list-group-item bg-light p-3 mb-1 rounded">
                     <input class="mx-1" type="checkbox"><a href="http://stepik.org"
                                                            class="badge badge-light mx-1">Learn JS,
                     CSS, HTML</a><span class="badge badge-info mx-1">#JS</span><span
                         class="badge badge-info mx-1">#CSS</span><span class="badge badge-info mx-1">#HTML</span>
-                    <button data-id="remove" class="btn btn-danger btn-sm float-right p-0">&#10006;</button>
-                </li>
+                    <button data-id="remove" class="btn btn-light btn-sm float-right p-0">&#10006;</button>
+                </li>-->
             </ul>
-        </div>
+        <!--</div>-->
     </div>
 </main>
 
