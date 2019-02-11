@@ -12,27 +12,42 @@
 </head>
 <body>
 <header>
-    <h1>Read Later</h1>
+    <h2>Homework #6 <span class="badge badge-secondary">Read Later</span></h2>
 </header>
 <main>
     <div class="container shadow p-2 mb-3 bg-white">
+        <div class="btn-group btn-group-toggle mb-2 shadow" data-toggle="buttons">
+            <label class="btn btn-secondary btn-md active">
+                <input type="radio" name="options" id="readTab" autocomplete="off" checked> Read
+            </label>
+            <label class="btn btn-secondary btn-md">
+                <input type="radio" name="options" id="archiveTab" autocomplete="off"> Already read
+            </label>
+            <label class="btn btn-secondary btn-md">
+                <input type="radio" name="options" id="searchTab" autocomplete="off"> Search
+            </label>
+        </div>
 
-        <input class="btn btn-primary btn-lg shadow mb-2" type="button" value="Read" disabled>
-        <input class="btn btn-primary btn-lg shadow mb-2" type="button" value="Already read">
-        <input class="btn btn-primary btn-lg shadow mb-2" type="button" value="Search">
-
-        <form class="d-flex justify-content-between" action="">
-            <input class="w-25 shadow p-1 mb-1 form-control" type="text" id="link-name" placeholder="Name" name="linkName" autofocus>
-            <input class="w-25 shadow p-1 mb-1 form-control" type="text" id="link-tags" placeholder="#tags" name="linkTags">
-            <input class="w-25 shadow p-1 mb-1 form-control" type="text" id="link-url" placeholder="http://" name="linkUrl">
-            <button type="submit" class="w-25 mb-1 shadow btn btn-primary btn-sm btn-block" id="link-add-btn">Add
+        <form class="d-flex justify-content-between" id="link-add-form">
+            <input class="shadow p-1 mb-1 mr-2 form-control" type="text" id="link-name" placeholder="Name"
+                   name="linkName" autofocus>
+            <input class="shadow p-1 mb-1 mr-2 form-control" type="text" id="link-tags" placeholder="#tag1,#tag2,..."
+                   name="linkTags">
+            <input class="shadow p-1 mb-1 mr-2 form-control" type="text" id="link-url" placeholder="http://"
+                   name="linkUrl">
+            <button type="submit" class="w-50 shadow mb-1 btn btn-primary btn-sm btn-block" id="link-add-btn">Add
             </button>
         </form>
 
         <div class="task-list container shadow p-3 mt-2 bg-white">
             <ul>
-                <li class="list-group-item bg-light p-3 mb-1 rounded">first link</li>
-                <li class="list-group-item bg-light p-3 mb-1 rounded">second link</li>
+                <li class="list-group-item bg-light p-3 mb-1 rounded">
+                    <input class="mx-1" type="checkbox"><a href="http://stepik.org"
+                                                           class="badge badge-light mx-1">Learn JS,
+                    CSS, HTML</a><span class="badge badge-info mx-1">#JS</span><span
+                        class="badge badge-info mx-1">#CSS</span><span class="badge badge-info mx-1">#HTML</span>
+                    <button data-id="remove" class="btn btn-danger btn-sm float-right p-0">&#10006;</button>
+                </li>
             </ul>
         </div>
     </div>
