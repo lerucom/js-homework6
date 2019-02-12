@@ -11,12 +11,16 @@ const linkUrlEl = document.querySelector('#link-url');
 const linkAddBtnEl = document.querySelector('#link-add-btn');
 const formEl = document.getElementById('link-add-form');
 
+const readItemList = new ReadItemList();
+const archiveItemList = new ArchiveItemList();
+
 readTabEl.addEventListener('click', (evt) => {
     evt.preventDefault();
     archiveTabEl.parentElement.classList.remove('active');
     searchEl.parentElement.classList.remove('active');
     readTabEl.parentElement.classList.add('active');
     formEl.classList.replace('d-none', 'd-flex');
+    rebuildTreeReadTab(listItemsEl, readItemList);
 });
 
 archiveTabEl.addEventListener('click', (evt) => {
@@ -25,11 +29,8 @@ archiveTabEl.addEventListener('click', (evt) => {
     searchEl.parentElement.classList.remove('active');
     archiveTabEl.parentElement.classList.add('active');
     formEl.classList.replace('d-flex', 'd-none');
+    rebuildTreeArchiveTab(listItemsEl, archiveItemList);
 });
-
-const readItemList = new ReadItemList();
-const archiveItemList = new ArchiveItemList();
-rebuildTree(listItemsEl, readItemList);
 
 linkAddBtnEl.addEventListener('click', (evt) => {
     evt.preventDefault();
@@ -46,7 +47,7 @@ linkAddBtnEl.addEventListener('click', (evt) => {
         linkNameEl.value = '';
         linkTagsEl.value = '';
         linkUrlEl.value = '';
-        rebuildTree(listItemsEl, readItemList);
+        rebuildTreeReadTab(listItemsEl, readItemList);
     }
 });
 
@@ -75,7 +76,7 @@ function showError(container) {
     container.classList.add('border', 'border-danger');
 }
 
-function rebuildTree(container, list) {
+function rebuildTreeReadTab(container, list) {
     container.innerHTML = '';
 
     for (const item of list.items) {
@@ -110,13 +111,61 @@ function rebuildTree(container, list) {
             checkboxEl.setAttribute('checked', 'true');
             archiveItemList.add(item);
             readItemList.remove(item);
-            rebuildTree(container, list);
+            rebuildTreeReadTab(container, list);
         });
 
         const removeEl = liEl.querySelector('[data-id=remove]');
         removeEl.addEventListener('click', (evt) => {
             readItemList.remove(item);
-            rebuildTree(container, list);
+            rebuildTreeReadTab(container, list);
+        });
+
+        container.appendChild(liEl);
+    }
+}
+
+function rebuildTreeArchiveTab(container, list) {
+    container.innerHTML = '';
+
+    for (const item of list.items) {
+        const liEl = document.createElement('li');
+        liEl.className = 'list-group-item bg-light p-3 mb-1 rounded';
+        if (item.tags.length === 2) {
+            liEl.innerHTML = `
+            <input class="mx-1" data-id="checkbox" type="checkbox"><a href="${item.url}" class="badge badge-light mx-1">${item.name}</a>
+            <span class="badge badge-info mx-1">${item.tags[0]}</span>
+            <span class="badge badge-info mx-1">${item.tags[1]}</span>
+            <button data-id="remove" class="btn btn-light btn-sm float-right p-0">&#10006;</button>
+        `;
+        } else if (item.tags.length === 3) {
+            liEl.innerHTML = `
+            <input class="mx-1" data-id="checkbox" type="checkbox"><a href="${item.url}" class="badge badge-light mx-1">${item.name}</a>
+            <span class="badge badge-info mx-1">${item.tags[0]}</span>
+            <span class="badge badge-info mx-1">${item.tags[1]}</span>
+            <span class="badge badge-info mx-1">${item.tags[2]}</span>
+            <button data-id="remove" class="btn btn-light btn-sm float-right p-0">&#10006;</button>
+        `;
+        } else {
+            liEl.innerHTML = `
+            <input class="mx-1" data-id="checkbox" type="checkbox"><a href="${item.url}" class="badge badge-light mx-1">${item.name}</a>
+            <span class="badge badge-info mx-1">${item.tags}</span>
+            <button data-id="remove" class="btn btn-light btn-sm float-right p-0">&#10006;</button>
+        `;
+        }
+
+        const checkboxEl = liEl.querySelector('[data-id=checkbox]');
+        checkboxEl.addEventListener('click', (evt) => {
+            item.done = !item.done;
+            checkboxEl.setAttribute('checked', 'true');
+            readItemList.add(item);
+            archiveItemList.remove(item);
+            rebuildTreeArchiveTab(container, list);
+        });
+
+        const removeEl = liEl.querySelector('[data-id=remove]');
+        removeEl.addEventListener('click', (evt) => {
+            archiveItemList.remove(item);
+            rebuildTreeArchiveTab(container, list);
         });
 
         container.appendChild(liEl);
