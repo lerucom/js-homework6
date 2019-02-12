@@ -9,17 +9,19 @@ const linkNameEl = document.querySelector('#link-name');
 const linkTagsEl = document.querySelector('#link-tags');
 const linkUrlEl = document.querySelector('#link-url');
 const linkAddBtnEl = document.querySelector('#link-add-btn');
+const formEl = document.getElementById('link-add-form');
 
 const readItemList = new ReadItemList();
 rebuildTree(listItemsEl, readItemList);
 
 linkAddBtnEl.addEventListener('click', (evt) => {
     evt.preventDefault();
-    //TODO: validate form
     //TODO: условие что input'ы не пустые, tags с #
+    validate(formEl);
+    if ((linkNameEl.value.trim() !== '') && (linkUrlEl.value.trim() !== '')) {
 
     const readItem = new ReadItem(linkNameEl.value.trim(),
-        linkTagsEl.value.replace(/\s/g,''),
+        linkTagsEl.value.replace(/\s/g, ''),
         linkUrlEl.value.trim());
 
     readItemList.add(readItem);
@@ -28,7 +30,32 @@ linkAddBtnEl.addEventListener('click', (evt) => {
     linkTagsEl.value = '';
     linkUrlEl.value = '';
     rebuildTree(listItemsEl, readItemList);
-});
+}});
+
+function validate(form) {
+    const elems = form.elements;
+
+    resetError(elems.linkName);
+    if (!elems.linkName.value) {
+        showError(elems.linkName);
+    }
+    resetError(elems.linkTags);
+    if (!elems.linkTags.value) {
+        showError(elems.linkTags);
+    }
+    resetError(elems.linkUrl);
+    if (!elems.linkUrl.value) {
+        showError(elems.linkUrl);
+    }
+}
+
+function resetError(container) {
+    container.classList.remove('border', 'border-danger');
+}
+
+function showError(container) {
+    container.classList.add('border', 'border-danger');
+}
 
 function rebuildTree(container, list) {
     container.innerHTML = '';
@@ -37,7 +64,7 @@ function rebuildTree(container, list) {
         const liEl = document.createElement('li');
         liEl.className = 'list-group-item bg-light p-3 mb-1 rounded';
         if (item.tags.length === 2) {
-        liEl.innerHTML = `
+            liEl.innerHTML = `
             <input class="mx-1" data-id="checkbox" type="checkbox"><a href="${item.url}" class="badge badge-light mx-1">${item.name}</a>
             <span class="badge badge-info mx-1">${item.tags[0]}</span>
             <span class="badge badge-info mx-1">${item.tags[1]}</span>

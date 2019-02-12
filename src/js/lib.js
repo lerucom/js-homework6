@@ -18,13 +18,12 @@ export class ReadItemList {
     }
 
     add(item) {
-        //TODO: добавление эл-та
+        //TODO: нельзя добавить, если ссылка уже есть в Read или Archive
         this.items.push(item);
         this.save();
     }
 
     remove(item) {
-        //TODO: удаление эл-та
         const index = this.items.indexOf(item);
         if (index !== -1) {
             this.items.splice(index, 1);
@@ -33,7 +32,6 @@ export class ReadItemList {
     }
 
     save() {
-        //TODO: сохраняем localStorage
         localStorage.setItem('readItemList', JSON.stringify(this.items));
     }
 }
