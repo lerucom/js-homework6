@@ -64,3 +64,13 @@ export class ArchiveItemList {
         localStorage.setItem('archiveItemList', JSON.stringify(this.items));
     }
 }
+
+export class SearchItemList {
+    constructor() {
+        this.items = [];
+    }
+
+    add(item) {
+        this.items.concat(item);
+    }
+}
