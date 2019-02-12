@@ -17,8 +17,8 @@
 <main>
     <div class="container shadow p-2 mb-2 bg-white">
         <div class="btn-group btn-group-toggle mb-2 shadow" data-toggle="buttons">
-            <label class="btn btn-secondary btn-md active">
-                <input type="radio" name="options" id="readTab" autocomplete="off" checked>Read
+            <label class="btn btn-secondary btn-md">
+                <input type="radio" name="options" id="readTab" autocomplete="off">Read
             </label>
             <label class="btn btn-secondary btn-md">
                 <input type="radio" name="options" id="archiveTab" autocomplete="off">Archive
@@ -28,7 +28,7 @@
             </label>
         </div>
 
-        <form class="d-flex justify-content-between my-2" id="link-add-form">
+        <form class="d-none justify-content-between my-2" id="link-add-form">
             <input class="shadow p-1 mb-1 mr-2 form-control" type="text" id="link-name" placeholder="Name"
                    name="linkName" autofocus>
             <input class="shadow p-1 mb-1 mr-2 form-control" type="text" id="link-tags" placeholder="#tag1,#tag2,..."

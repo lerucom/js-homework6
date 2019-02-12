@@ -1,7 +1,7 @@
-import {ReadItem, ReadItemList} from "./lib.js";
+import {ReadItem, ReadItemList, ArchiveItemList} from "./lib.js";
 
 const readTabEl = document.querySelector('#readTab');
-const alreadyReadTabEl = document.querySelector('#archiveTab');
+const archiveTabEl = document.querySelector('#archiveTab');
 const searchEl = document.querySelector('#searchTab');
 const listItemsEl = document.querySelector('#list-items');
 
@@ -11,7 +11,24 @@ const linkUrlEl = document.querySelector('#link-url');
 const linkAddBtnEl = document.querySelector('#link-add-btn');
 const formEl = document.getElementById('link-add-form');
 
+readTabEl.addEventListener('click', (evt) => {
+    evt.preventDefault();
+    archiveTabEl.parentElement.classList.remove('active');
+    searchEl.parentElement.classList.remove('active');
+    readTabEl.parentElement.classList.add('active');
+    formEl.classList.replace('d-none', 'd-flex');
+});
+
+archiveTabEl.addEventListener('click', (evt) => {
+    evt.preventDefault();
+    readTabEl.parentElement.classList.remove('active');
+    searchEl.parentElement.classList.remove('active');
+    archiveTabEl.parentElement.classList.add('active');
+    formEl.classList.replace('d-flex', 'd-none');
+});
+
 const readItemList = new ReadItemList();
+const archiveItemList = new ArchiveItemList();
 rebuildTree(listItemsEl, readItemList);
 
 linkAddBtnEl.addEventListener('click', (evt) => {
@@ -20,17 +37,18 @@ linkAddBtnEl.addEventListener('click', (evt) => {
     validate(formEl);
     if ((linkNameEl.value.trim() !== '') && (linkUrlEl.value.trim() !== '')) {
 
-    const readItem = new ReadItem(linkNameEl.value.trim(),
-        linkTagsEl.value.replace(/\s/g, ''),
-        linkUrlEl.value.trim());
+        const readItem = new ReadItem(linkNameEl.value.trim(),
+            linkTagsEl.value.replace(/\s/g, ''),
+            linkUrlEl.value.trim());
 
-    readItemList.add(readItem);
+        readItemList.add(readItem);
 
-    linkNameEl.value = '';
-    linkTagsEl.value = '';
-    linkUrlEl.value = '';
-    rebuildTree(listItemsEl, readItemList);
-}});
+        linkNameEl.value = '';
+        linkTagsEl.value = '';
+        linkUrlEl.value = '';
+        rebuildTree(listItemsEl, readItemList);
+    }
+});
 
 function validate(form) {
     const elems = form.elements;
@@ -89,7 +107,9 @@ function rebuildTree(container, list) {
         const checkboxEl = liEl.querySelector('[data-id=checkbox]');
         checkboxEl.addEventListener('click', (evt) => {
             item.done = !item.done;
-            //TODO: вырезать item из readTab и вставить в archiveTab
+            checkboxEl.setAttribute('checked', 'true');
+            archiveItemList.add(item);
+            readItemList.remove(item);
             rebuildTree(container, list);
         });
 
@@ -102,4 +122,3 @@ function rebuildTree(container, list) {
         container.appendChild(liEl);
     }
 }
-
