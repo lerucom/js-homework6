@@ -50,25 +50,32 @@ searchTabEl.addEventListener('click', (evt) => {
 
 linkAddBtnEl.addEventListener('click', (evt) => {
     evt.preventDefault();
-    //TODO: условие что input'ы не пустые, tags с #
     validate(formEl);
     if ((linkNameEl.value.trim() !== '') && (linkUrlEl.value.trim() !== '')) {
         if ((linkTagsEl.value[0] === '#') && (linkTagsEl.value.length > 1)) {
-            const readItem = new ReadItem(linkNameEl.value.trim(),
-                linkTagsEl.value.replace(/\s/g, ''),
-                linkUrlEl.value.trim());
+            if (!(readItemList.items.some((obj) => {
+                return obj.url === linkUrlEl.value.trim();
+            })) && !(archiveItemList.items.some((obj) => {
+                return obj.url === linkUrlEl.value.trim();
+            }))) {
+                const readItem = new ReadItem(linkNameEl.value.trim(),
+                    linkTagsEl.value.replace(/\s/g, ''),
+                    linkUrlEl.value.trim());
 
-            readItemList.add(readItem);
+                readItemList.add(readItem);
 
-            linkNameEl.value = '';
-            linkTagsEl.value = '';
-            linkUrlEl.value = '';
-            rebuildTreeReadTab(listItemsEl, readItemList);
+                linkNameEl.value = '';
+                linkTagsEl.value = '';
+                linkUrlEl.value = '';
+                rebuildTreeReadTab(listItemsEl, readItemList);
+            }
         }
-    }});
+    }
+});
 
 searchBtnEl.addEventListener('click', (evt) => {
     evt.preventDefault();
+    searchItemList.items = [];
     validate(searchFormEl);
     if ((searchInputEl.value.trim() !== '') && (searchInputEl.value.trim().length >= 2)) {
 
@@ -76,12 +83,11 @@ searchBtnEl.addEventListener('click', (evt) => {
         const arrayOfItems = readItemList.items.concat(archiveItemList.items);
 
         arrayOfItems.forEach((obj) => {
-            if (obj.name.toLowerCase().includes(searchValue)) {
-            searchItemList.add(obj);
-            console.log(searchItemList.items);
-        }});
+            if ((obj.name.toLowerCase().includes(searchValue)) || (obj.tags.indexOf(searchValue) !== -1)) {
+                searchItemList.add(obj);
+            }
+        });
 
-        console.log(searchItemList.items);
         rebuildTreeSearchTab(listItemsEl, searchItemList);
     }
 });
@@ -129,14 +135,14 @@ function rebuildTreeReadTab(container, list) {
         liEl.className = 'list-group-item bg-light p-3 mb-1 rounded';
         if (item.tags.length === 3) {
             liEl.innerHTML = `
-            <input class="mx-1" data-id="checkbox" type="checkbox"><a href="${item.url}" class="badge badge-light mx-1">${item.name}</a>
+            <input class="mx-1" data-id="checkbox" type="checkbox"><a href="${item.url}" class="badge badge-light mx-1" target="_blank">${item.name}</a>
             <span class="badge badge-info mx-1">${item.tags[1]}</span>
             <span class="badge badge-info mx-1">${item.tags[2]}</span>
             <button data-id="remove" class="btn btn-light btn-sm float-right p-0">&#10006;</button>
         `;
         } else if (item.tags.length === 4) {
             liEl.innerHTML = `
-            <input class="mx-1" data-id="checkbox" type="checkbox"><a href="${item.url}" class="badge badge-light mx-1">${item.name}</a>
+            <input class="mx-1" data-id="checkbox" type="checkbox"><a href="${item.url}" class="badge badge-light mx-1" target="_blank">${item.name}</a>
             <span class="badge badge-info mx-1">${item.tags[1]}</span>
             <span class="badge badge-info mx-1">${item.tags[2]}</span>
             <span class="badge badge-info mx-1">${item.tags[3]}</span>
@@ -144,7 +150,7 @@ function rebuildTreeReadTab(container, list) {
         `;
         } else {
             liEl.innerHTML = `
-            <input class="mx-1" data-id="checkbox" type="checkbox"><a href="${item.url}" class="badge badge-light mx-1">${item.name}</a>
+            <input class="mx-1" data-id="checkbox" type="checkbox"><a href="${item.url}" class="badge badge-light mx-1" target="_blank">${item.name}</a>
             <span class="badge badge-info mx-1">${item.tags[1]}</span>
             <button data-id="remove" class="btn btn-light btn-sm float-right p-0">&#10006;</button>
         `;
@@ -177,14 +183,14 @@ function rebuildTreeArchiveTab(container, list) {
         liEl.className = 'list-group-item bg-light p-3 mb-1 rounded';
         if (item.tags.length === 3) {
             liEl.innerHTML = `
-            <input class="mx-1" data-id="checkbox" type="checkbox"><a href="${item.url}" class="badge badge-light mx-1">${item.name}</a>
+            <input class="mx-1" data-id="checkbox" type="checkbox" checked><a href="${item.url}" class="badge badge-light mx-1" target="_blank">${item.name}</a>
             <span class="badge badge-info mx-1">${item.tags[1]}</span>
             <span class="badge badge-info mx-1">${item.tags[2]}</span>
             <button data-id="remove" class="btn btn-light btn-sm float-right p-0">&#10006;</button>
         `;
         } else if (item.tags.length === 4) {
             liEl.innerHTML = `
-            <input class="mx-1" data-id="checkbox" type="checkbox"><a href="${item.url}" class="badge badge-light mx-1">${item.name}</a>
+            <input class="mx-1" data-id="checkbox" type="checkbox" checked><a href="${item.url}" class="badge badge-light mx-1" target="_blank">${item.name}</a>
             <span class="badge badge-info mx-1">${item.tags[1]}</span>
             <span class="badge badge-info mx-1">${item.tags[2]}</span>
             <span class="badge badge-info mx-1">${item.tags[3]}</span>
@@ -192,7 +198,7 @@ function rebuildTreeArchiveTab(container, list) {
         `;
         } else {
             liEl.innerHTML = `
-            <input class="mx-1" data-id="checkbox" type="checkbox"><a href="${item.url}" class="badge badge-light mx-1">${item.name}</a>
+            <input class="mx-1" data-id="checkbox" type="checkbox" checked><a href="${item.url}" class="badge badge-light mx-1" target="_blank">${item.name}</a>
             <span class="badge badge-info mx-1">${item.tags[1]}</span>
             <button data-id="remove" class="btn btn-light btn-sm float-right p-0">&#10006;</button>
         `;
@@ -224,16 +230,16 @@ function rebuildTreeSearchTab(container, list) {
         const liEl = document.createElement('li');
         liEl.className = 'list-group-item bg-light p-3 mb-1 rounded';
         if (item.tags.length === 3) {
-            liEl.innerHTML = `<a href="${item.url}" class="badge badge-light mx-1">${item.name}</a>
+            liEl.innerHTML = `<a href="${item.url}" class="badge badge-light mx-1" target="_blank">${item.name}</a>
             <span class="badge badge-info mx-1">${item.tags[1]}</span>
             <span class="badge badge-info mx-1">${item.tags[2]}</span>`;
         } else if (item.tags.length === 4) {
-            liEl.innerHTML = `<a href="${item.url}" class="badge badge-light mx-1">${item.name}</a>
+            liEl.innerHTML = `<a href="${item.url}" class="badge badge-light mx-1" target="_blank">${item.name}</a>
             <span class="badge badge-info mx-1">${item.tags[1]}</span>
             <span class="badge badge-info mx-1">${item.tags[2]}</span>
             <span class="badge badge-info mx-1">${item.tags[3]}</span>`;
         } else {
-            liEl.innerHTML = `<a href="${item.url}" class="badge badge-light mx-1">${item.name}</a>
+            liEl.innerHTML = `<a href="${item.url}" class="badge badge-light mx-1" target="_blank">${item.name}</a>
             <span class="badge badge-info mx-1">${item.tags[1]}</span>`;
         }
 
