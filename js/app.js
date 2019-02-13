@@ -53,19 +53,19 @@ linkAddBtnEl.addEventListener('click', (evt) => {
     //TODO: условие что input'ы не пустые, tags с #
     validate(formEl);
     if ((linkNameEl.value.trim() !== '') && (linkUrlEl.value.trim() !== '')) {
+        if ((linkTagsEl.value[0] === '#') && (linkTagsEl.value.length > 1)) {
+            const readItem = new ReadItem(linkNameEl.value.trim(),
+                linkTagsEl.value.replace(/\s/g, ''),
+                linkUrlEl.value.trim());
 
-        const readItem = new ReadItem(linkNameEl.value.trim(),
-            linkTagsEl.value.replace(/\s/g, ''),
-            linkUrlEl.value.trim());
+            readItemList.add(readItem);
 
-        readItemList.add(readItem);
-
-        linkNameEl.value = '';
-        linkTagsEl.value = '';
-        linkUrlEl.value = '';
-        rebuildTreeReadTab(listItemsEl, readItemList);
-    }
-});
+            linkNameEl.value = '';
+            linkTagsEl.value = '';
+            linkUrlEl.value = '';
+            rebuildTreeReadTab(listItemsEl, readItemList);
+        }
+    }});
 
 searchBtnEl.addEventListener('click', (evt) => {
     evt.preventDefault();
@@ -75,17 +75,13 @@ searchBtnEl.addEventListener('click', (evt) => {
         const searchValue = searchInputEl.value.trim().toLowerCase();
         const arrayOfItems = readItemList.items.concat(archiveItemList.items);
 
-        const result = arrayOfItems.filter((obj) => {
-            for (let i = 0; i < 1; i++) {
-                if (obj[i].toLowerCase().includes(searchValue)) {
-                    return true;
-                }
-            }
-        });
+        arrayOfItems.forEach((obj) => {
+            if (obj.name.toLowerCase().includes(searchValue)) {
+            searchItemList.add(obj);
+            console.log(searchItemList.items);
+        }});
 
-        searchItemList.add(result);
-
-        searchInputEl.value = '';
+        console.log(searchItemList.items);
         rebuildTreeSearchTab(listItemsEl, searchItemList);
     }
 });
@@ -101,7 +97,7 @@ function validate(form) {
         }
 
         resetError(elems.linkTags);
-        if (!elems.linkTags.value) {
+        if ((elems.linkTags.value[0] !== '#') || (elems.linkTags.value.length < 2)) {
             showError(elems.linkTags);
         }
 
@@ -111,7 +107,7 @@ function validate(form) {
         }
     } else {
         resetError(elems.searchName);
-        if (!elems.searchName.value) {
+        if ((!elems.searchName.value) || (elems.searchName.value.length < 2)) {
             showError(elems.searchName);
         }
     }
@@ -131,25 +127,25 @@ function rebuildTreeReadTab(container, list) {
     for (const item of list.items) {
         const liEl = document.createElement('li');
         liEl.className = 'list-group-item bg-light p-3 mb-1 rounded';
-        if (item.tags.length === 2) {
+        if (item.tags.length === 3) {
             liEl.innerHTML = `
             <input class="mx-1" data-id="checkbox" type="checkbox"><a href="${item.url}" class="badge badge-light mx-1">${item.name}</a>
-            <span class="badge badge-info mx-1">${item.tags[0]}</span>
-            <span class="badge badge-info mx-1">${item.tags[1]}</span>
-            <button data-id="remove" class="btn btn-light btn-sm float-right p-0">&#10006;</button>
-        `;
-        } else if (item.tags.length === 3) {
-            liEl.innerHTML = `
-            <input class="mx-1" data-id="checkbox" type="checkbox"><a href="${item.url}" class="badge badge-light mx-1">${item.name}</a>
-            <span class="badge badge-info mx-1">${item.tags[0]}</span>
             <span class="badge badge-info mx-1">${item.tags[1]}</span>
             <span class="badge badge-info mx-1">${item.tags[2]}</span>
+            <button data-id="remove" class="btn btn-light btn-sm float-right p-0">&#10006;</button>
+        `;
+        } else if (item.tags.length === 4) {
+            liEl.innerHTML = `
+            <input class="mx-1" data-id="checkbox" type="checkbox"><a href="${item.url}" class="badge badge-light mx-1">${item.name}</a>
+            <span class="badge badge-info mx-1">${item.tags[1]}</span>
+            <span class="badge badge-info mx-1">${item.tags[2]}</span>
+            <span class="badge badge-info mx-1">${item.tags[3]}</span>
             <button data-id="remove" class="btn btn-light btn-sm float-right p-0">&#10006;</button>
         `;
         } else {
             liEl.innerHTML = `
             <input class="mx-1" data-id="checkbox" type="checkbox"><a href="${item.url}" class="badge badge-light mx-1">${item.name}</a>
-            <span class="badge badge-info mx-1">${item.tags}</span>
+            <span class="badge badge-info mx-1">${item.tags[1]}</span>
             <button data-id="remove" class="btn btn-light btn-sm float-right p-0">&#10006;</button>
         `;
         }
@@ -179,25 +175,25 @@ function rebuildTreeArchiveTab(container, list) {
     for (const item of list.items) {
         const liEl = document.createElement('li');
         liEl.className = 'list-group-item bg-light p-3 mb-1 rounded';
-        if (item.tags.length === 2) {
+        if (item.tags.length === 3) {
             liEl.innerHTML = `
             <input class="mx-1" data-id="checkbox" type="checkbox"><a href="${item.url}" class="badge badge-light mx-1">${item.name}</a>
-            <span class="badge badge-info mx-1">${item.tags[0]}</span>
-            <span class="badge badge-info mx-1">${item.tags[1]}</span>
-            <button data-id="remove" class="btn btn-light btn-sm float-right p-0">&#10006;</button>
-        `;
-        } else if (item.tags.length === 3) {
-            liEl.innerHTML = `
-            <input class="mx-1" data-id="checkbox" type="checkbox"><a href="${item.url}" class="badge badge-light mx-1">${item.name}</a>
-            <span class="badge badge-info mx-1">${item.tags[0]}</span>
             <span class="badge badge-info mx-1">${item.tags[1]}</span>
             <span class="badge badge-info mx-1">${item.tags[2]}</span>
+            <button data-id="remove" class="btn btn-light btn-sm float-right p-0">&#10006;</button>
+        `;
+        } else if (item.tags.length === 4) {
+            liEl.innerHTML = `
+            <input class="mx-1" data-id="checkbox" type="checkbox"><a href="${item.url}" class="badge badge-light mx-1">${item.name}</a>
+            <span class="badge badge-info mx-1">${item.tags[1]}</span>
+            <span class="badge badge-info mx-1">${item.tags[2]}</span>
+            <span class="badge badge-info mx-1">${item.tags[3]}</span>
             <button data-id="remove" class="btn btn-light btn-sm float-right p-0">&#10006;</button>
         `;
         } else {
             liEl.innerHTML = `
             <input class="mx-1" data-id="checkbox" type="checkbox"><a href="${item.url}" class="badge badge-light mx-1">${item.name}</a>
-            <span class="badge badge-info mx-1">${item.tags}</span>
+            <span class="badge badge-info mx-1">${item.tags[1]}</span>
             <button data-id="remove" class="btn btn-light btn-sm float-right p-0">&#10006;</button>
         `;
         }
@@ -227,18 +223,18 @@ function rebuildTreeSearchTab(container, list) {
     for (const item of list.items) {
         const liEl = document.createElement('li');
         liEl.className = 'list-group-item bg-light p-3 mb-1 rounded';
-        if (item.tags.length === 2) {
+        if (item.tags.length === 3) {
             liEl.innerHTML = `<a href="${item.url}" class="badge badge-light mx-1">${item.name}</a>
-            <span class="badge badge-info mx-1">${item.tags[0]}</span>
-            <span class="badge badge-info mx-1">${item.tags[1]}</span>`;
-        } else if (item.tags.length === 3) {
-            liEl.innerHTML = `<a href="${item.url}" class="badge badge-light mx-1">${item.name}</a>
-            <span class="badge badge-info mx-1">${item.tags[0]}</span>
             <span class="badge badge-info mx-1">${item.tags[1]}</span>
             <span class="badge badge-info mx-1">${item.tags[2]}</span>`;
+        } else if (item.tags.length === 4) {
+            liEl.innerHTML = `<a href="${item.url}" class="badge badge-light mx-1">${item.name}</a>
+            <span class="badge badge-info mx-1">${item.tags[1]}</span>
+            <span class="badge badge-info mx-1">${item.tags[2]}</span>
+            <span class="badge badge-info mx-1">${item.tags[3]}</span>`;
         } else {
             liEl.innerHTML = `<a href="${item.url}" class="badge badge-light mx-1">${item.name}</a>
-            <span class="badge badge-info mx-1">${item.tags}</span>`;
+            <span class="badge badge-info mx-1">${item.tags[1]}</span>`;
         }
 
         container.appendChild(liEl);

@@ -1,7 +1,7 @@
 export class ReadItem {
     constructor(name, tags, url) {
         this.name = name;
-        this.tags = tags.split(',');
+        this.tags = tags.split('#');
         this.url = url;
         this.done = false;
     }
@@ -71,6 +71,6 @@ export class SearchItemList {
     }
 
     add(item) {
-        this.items.concat(item);
+        this.items.push(item);
     }
 }
