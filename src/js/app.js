@@ -51,27 +51,37 @@ searchTabEl.addEventListener('click', (evt) => {
 linkAddBtnEl.addEventListener('click', (evt) => {
     evt.preventDefault();
     validate(formEl);
+    const filterReadItemList = readItemList.items.filter((obj) => {
+        return obj.url === linkUrlEl.value.trim();
+    });
+    const filterArchiveItemList = archiveItemList.items.filter((obj) => {
+        return obj.url === linkUrlEl.value.trim();
+    });
+
     if ((linkNameEl.value.trim() !== '') && (linkUrlEl.value.trim() !== '')) {
         if ((linkTagsEl.value[0] === '#') && (linkTagsEl.value.length > 1)) {
-            if (!(readItemList.items.some((obj) => {
-                return obj.url === linkUrlEl.value.trim();
-            })) && !(archiveItemList.items.some((obj) => {
-                return obj.url === linkUrlEl.value.trim();
-            }))) {
-                const readItem = new ReadItem(linkNameEl.value.trim(),
-                    linkTagsEl.value.replace(/\s/g, ''),
-                    linkUrlEl.value.trim());
+            if(filterReadItemList.length + filterArchiveItemList.length === 0) {
+                    const readItem = new ReadItem(linkNameEl.value.trim(),
+                        linkTagsEl.value.replace(/\s/g, ''),
+                        linkUrlEl.value.trim());
 
-                readItemList.add(readItem);
+                    readItemList.add(readItem);
 
-                linkNameEl.value = '';
-                linkTagsEl.value = '';
-                linkUrlEl.value = '';
-                rebuildTreeReadTab(listItemsEl, readItemList);
+                    clearInputs(linkNameEl, linkTagsEl, linkUrlEl);
+
+                    rebuildTreeReadTab(listItemsEl, readItemList);
+            } else {
+                alert('You already have this link. Check archive.')
             }
         }
     }
 });
+
+function clearInputs(...args) {
+    return args.forEach((arg) => {
+        arg.value = '';
+    })
+}
 
 searchBtnEl.addEventListener('click', (evt) => {
     evt.preventDefault();
