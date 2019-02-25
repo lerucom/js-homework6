@@ -47,7 +47,6 @@ export class ArchiveItemList {
     }
 
     add(item) {
-        //TODO: нельзя добавить, если ссылка уже есть в Read или Archive
         this.items.push(item);
         this.save();
     }
