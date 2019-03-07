@@ -4,8 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "serve": "browser-sync start -s \"src\" -f \".\"",
+    "frontend": "browser-sync start -s \"frontend/src\" -f \".\"",
     "test": "jest",
+    "backend": "nodemon ./backend/rest.js",
     "test-coverage": "jest --coverage"
   },
   "babel": {
