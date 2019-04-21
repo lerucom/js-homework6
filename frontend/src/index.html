@@ -12,39 +12,39 @@
 </head>
 <body>
 <header>
-    <h2>Homework #6 <span class="badge badge-secondary">Read Later</span></h2>
+    <h2>Read Later</h2>
 </header>
 <main>
     <div class="container shadow p-2 mb-2 bg-white">
         <div class="btn-group btn-group-toggle mb-2 shadow" data-toggle="buttons">
             <label class="btn btn-secondary btn-md">
-                <input type="radio" name="options" id="readTab" autocomplete="off">Read
+                <input type="radio" name="options" id="readTab" autocomplete="off">Прочитать
             </label>
             <label class="btn btn-secondary btn-md">
-                <input type="radio" name="options" id="archiveTab" autocomplete="off">Archive
+                <input type="radio" name="options" id="archiveTab" autocomplete="off">Прочитано
             </label>
             <label class="btn btn-secondary btn-md">
-                <input type="radio" name="options" id="searchTab" autocomplete="off">Search
+                <input type="radio" name="options" id="searchTab" autocomplete="off">Поиск
             </label>
         </div>
 
         <form class="d-none justify-content-between my-2" id="link-add-form">
-            <input class="shadow p-1 mb-1 mr-2 form-control" type="text" id="link-name" placeholder="Name"
-                   name="linkName" autofocus>
-            <input class="shadow p-1 mb-1 mr-2 form-control" type="text" id="link-tags" placeholder="#tag1#tag2"
+            <input class="shadow p-1 mb-1 mr-2 form-control" type="text" id="link-name" placeholder="Название ссылки"
+                   name="linkName">
+            <input class="shadow p-1 mb-1 mr-2 form-control" type="text" id="link-tags" placeholder="#тег1#тег2..."
                    name="linkTags">
-            <input class="shadow p-1 mb-1 mr-2 form-control" type="text" id="link-url" placeholder="http://"
+            <input class="shadow p-1 mb-1 mr-2 form-control" type="text" id="link-url" placeholder="http://..."
                    name="linkUrl">
-            <button type="submit" class="w-50 shadow mb-1 mr-5 btn btn-primary btn-sm btn-block" id="link-add-btn">Add
+            <button type="submit" class="w-50 shadow mb-1 mr-5 btn btn-primary btn-sm btn-block" id="link-add-btn">Добавить
             </button>
         </form>
 
         <form class="d-none justify-content-start w-75 my-2" id="search-form">
             <input class="shadow p-1 mb-1 mr-2 w-50 form-control" type="text" id="search-name"
-                   placeholder="Write name or string & press 'Enter'"
-                   name="searchName" autofocus>
+                   placeholder="Что искать?"
+                   name="searchName">
             <button type="submit" class="shadow p-1 mb-1 mr-2 w-25 btn btn-primary btn-sm btn-block" id="search-btn">
-                Search
+                Найти
             </button>
         </form>
 

@@ -5,7 +5,7 @@ export class Http {
     }
 
     getAll() {
-        return fetch(this.url);
+        return fetch(this.url); // fetch - что это
     }
 
     save(item) {

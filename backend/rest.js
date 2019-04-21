@@ -2,6 +2,7 @@
 // ctrl+leftmouse на 'restify' открывает его файл
 const restify = require('restify');
 const { BadRequestError, NotFoundError } = require('restify-errors');
+const port = process.env.PORT || 5000;
 
 const server = restify.createServer();
 
@@ -20,10 +21,7 @@ server.pre((req, res, next) => {
 });
 
 let nextId = 1;
-const items = [
-    {id: nextId++, name: 'Add Bootstrap', done: false},
-    {id: nextId++, name: 'Write tests', done: false},
-];
+const items = [];
 
 // '/items', GET
 server.get('/items', (req, res, next) => {
@@ -56,6 +54,8 @@ server.post('/items', (req, res, next) => {
 
     res.send();
     next();
+    console.log('PUSH');
+    console.log(items);
 });
 
 server.del('/items/:id', (req, res, next) => {
@@ -78,6 +78,6 @@ server.del('/items/:id', (req, res, next) => {
     next();
 });
 
-server.listen(7777, () => {
+server.listen(port, () => {
     console.log('server started');
 });
