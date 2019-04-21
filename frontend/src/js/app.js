@@ -1,4 +1,5 @@
 import {ReadItem, ReadItemList, SearchItemList} from "./lib.js";
+import {Sync} from "./sync.js";
 
 const readTabEl = document.querySelector('#readTab'); // вкладка Прочитать
 const archiveTabEl = document.querySelector('#archiveTab'); // вкладка Прочитано
@@ -16,15 +17,20 @@ const searchBtnEl = document.querySelector('#search-btn'); // кнопка На�
 
 const readItemList = new ReadItemList();
 const searchItemList = new SearchItemList();
+
+const sync = new Sync();
+sync.clearStorage();
+sync.pushStorage(); // синхронизация имеющихся данных с сервером при первой загрузке
+
 displayStartTab();
 
 readTabEl.addEventListener('click', (evt) => {
-    evt.preventDefault();
+    evt.preventDefault(); // отмена перезагрузки страницы
     displayStartTab();
 });
 
 archiveTabEl.addEventListener('click', (evt) => {
-    evt.preventDefault();
+    evt.preventDefault(); // отмена перезагрузки страницы
     readTabEl.parentElement.classList.remove('active');
     searchTabEl.parentElement.classList.remove('active');
     archiveTabEl.parentElement.classList.add('active');
@@ -34,13 +40,13 @@ archiveTabEl.addEventListener('click', (evt) => {
 });
 
 searchTabEl.addEventListener('click', (evt) => {
-    evt.preventDefault();
+    evt.preventDefault(); // отмена перезагрузки страницы
     readTabEl.parentElement.classList.remove('active');
     archiveTabEl.parentElement.classList.remove('active');
     searchTabEl.parentElement.classList.add('active');
     formEl.classList.replace('d-flex', 'd-none');
     searchFormEl.classList.replace('d-none', 'd-flex');
-    searchInputEl.focus();
+    searchInputEl.focus(); // автофокус поля ввода Поиска
     rebuildTreeSearchTab(listItemsEl, searchItemList);
 });
 
@@ -50,12 +56,12 @@ function displayStartTab() {
     readTabEl.parentElement.classList.add('active');
     formEl.classList.replace('d-none', 'd-flex');
     searchFormEl.classList.replace('d-flex', 'd-none');
-    linkNameEl.focus();
+    linkNameEl.focus(); // автофокус поля ввода Названия
     rebuildTreeReadTab(listItemsEl, readItemList);
 }
 
 linkAddBtnEl.addEventListener('click', (evt) => {
-    evt.preventDefault();
+    evt.preventDefault(); // отмена перезагрузки страницы
     validate(formEl);
     const filterReadItemList = readItemList.items.filter((obj) => {
         return obj.url === linkUrlEl.value.trim();
@@ -64,7 +70,8 @@ linkAddBtnEl.addEventListener('click', (evt) => {
     if ((linkNameEl.value.trim() !== '') && (linkUrlEl.value.trim() !== '')) {
         if ((linkTagsEl.value[0] === '#') && (linkTagsEl.value.length > 1)) {
             if (filterReadItemList.length === 0) {
-                const readItem = new ReadItem(linkNameEl.value.trim(),
+                const id = 0;
+                const readItem = new ReadItem(id, linkNameEl.value.trim(),
                     linkTagsEl.value.replace(/\s/g, '').trim(),
                     linkUrlEl.value.trim());
 
@@ -87,7 +94,7 @@ function clearInputs(...args) {
 }
 
 searchBtnEl.addEventListener('click', (evt) => {
-    evt.preventDefault();
+    evt.preventDefault(); // отмена перезагрузки страницы
     searchItemList.items = [];
     validate(searchFormEl);
     if ((searchInputEl.value.trim() !== '') && (searchInputEl.value.trim().length >= 2)) {

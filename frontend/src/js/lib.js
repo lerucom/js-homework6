@@ -1,10 +1,14 @@
+import {Http} from "./http.js";
+
+const http = new Http('https://readlater-server.herokuapp.com/items');
+
 export class ReadItem {
-    constructor(name, tags, url) {
+    constructor(id, name, tags, url) {
+        this.id = id;
         this.name = name;
         this.tags = tags.split('#').splice(1);
         this.url = url;
         this.done = false;
-        this.id = id;
     }
 }
 
@@ -15,17 +19,21 @@ export class ReadItemList {
             this.items = savedItems;
         } else {
             this.items = []; // если нет в локал стораж берем у сервера.
+            this.itemsCopy = [];
         }
     }
 
     add(item) {
         this.items.push(item);
+        http.add(item);
+        this.itemsCopy.push(item);
         this.save();
     }
 
     remove(item) {
         const index = this.items.indexOf(item);
         if (index !== -1) {
+            http.removeById(this.itemsCopy.indexOf(item)+1);
             this.items.splice(index, 1);
         }
         this.save();
@@ -45,31 +53,3 @@ export class SearchItemList {
         this.items.push(item);
     }
 }
-
-// export class ArchiveItemList {
-//     constructor() {
-//         const savedItems = JSON.parse(localStorage.getItem('archiveItemList'));
-//         if (savedItems !== null) {
-//             this.items = savedItems;
-//         } else {
-//             this.items = [];
-//         }
-//     }
-//
-//     add(item) {
-//         this.items.push(item);
-//         this.save();
-//     }
-//
-//     remove(item) {
-//         const index = this.items.indexOf(item);
-//         if (index !== -1) {
-//             this.items.splice(index, 1);
-//         }
-//         this.save();
-//     }
-//
-//     save() {
-//         localStorage.setItem('archiveItemList', JSON.stringify(this.items));
-//     }
-// }

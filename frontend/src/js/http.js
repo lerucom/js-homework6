@@ -1,20 +1,29 @@
-// сервер на чистом js, так писать не нужно и создавать файл
 export class Http {
     constructor(url) {
         this.url = url;
     }
 
     getAll() {
-        return fetch(this.url); // fetch - что это
+        return fetch(this.url);
     }
 
     save(item) {
         return fetch(this.url, {
-           body: JSON.stringify(item),
-           method: 'POST',
-           headers: {
-               'Content-Type': 'application/json'
-           }
+            body: JSON.stringify(item),
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+    }
+
+    add (item) {
+        return fetch(`${this.url}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(item)
         });
     }
 
@@ -23,4 +32,21 @@ export class Http {
             method: 'DELETE'
         });
     }
+
+    changeLink(item){
+        return fetch(`${this.url}/${item}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(item)
+        });
+    }
+
+    deleteAll(){
+        return fetch(`${this.url}`, {
+            method: 'DELETE'
+        });
+    }
+
 }
