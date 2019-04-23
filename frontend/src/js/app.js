@@ -14,15 +14,16 @@ const formEl = document.querySelector('#link-add-form'); // форма доба�
 const searchFormEl = document.querySelector('#search-form'); // форма поиска
 const searchInputEl = document.querySelector('#search-name'); // поле поиска
 const searchBtnEl = document.querySelector('#search-btn'); // кнопка Найти
+const delAllBtnEl = document.querySelector('#delAll-btn'); // кнопка удалить все записи
 
 const readItemList = new ReadItemList();
 const searchItemList = new SearchItemList();
 
+displayStartTab();
 const sync = new Sync();
 sync.clearStorage();
 sync.pushStorage(); // синхронизация имеющихся данных с сервером при первой загрузке
 
-displayStartTab();
 
 readTabEl.addEventListener('click', (evt) => {
     evt.preventDefault(); // отмена перезагрузки страницы
@@ -243,3 +244,11 @@ function rebuildTreeSearchTab(container, list) {
         container.appendChild(liEl);
     }
 }
+
+delAllBtnEl.addEventListener('click', (evt) => {
+    evt.preventDefault();
+    readItemList.removeAll();
+    sync.clearStorage();
+    rebuildTreeReadTab(listItemsEl, readItemList);
+    rebuildTreeArchiveTab(listItemsEl, readItemList);
+});

@@ -35,7 +35,8 @@
                    name="linkTags">
             <input class="shadow p-1 mb-1 mr-2 form-control" type="text" id="link-url" placeholder="http://..."
                    name="linkUrl">
-            <button type="submit" class="w-50 shadow mb-1 mr-5 btn btn-primary btn-sm btn-block" id="link-add-btn">Добавить
+            <button type="submit" class="w-50 shadow mb-1 mr-5 btn btn-primary btn-sm btn-block" id="link-add-btn">
+                Добавить
             </button>
         </form>
 
@@ -50,10 +51,14 @@
 
         <ul class="list-group mr-5 my-4" id="list-items">
         </ul>
+        <button type="submit" class="shadow p-1 mb-1 mr-2 w-25 btn btn-danger btn-sm" id="delAll-btn">
+            Удалить все записи
+        </button>
     </div>
 </main>
 
 <script src="js/lib.js" type="module"></script>
 <script src="js/app.js" type="module"></script>
+<script src="js/sync.js" type="module"></script>
 </body>
 </html>

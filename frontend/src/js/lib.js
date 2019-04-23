@@ -19,28 +19,32 @@ export class ReadItemList {
             this.items = savedItems;
         } else {
             this.items = []; // если нет в локал стораж берем у сервера.
-            this.itemsCopy = [];
         }
     }
 
     add(item) {
         this.items.push(item);
+        console.log(this.items);
         http.add(item);
-        this.itemsCopy.push(item);
         this.save();
     }
 
     remove(item) {
         const index = this.items.indexOf(item);
         if (index !== -1) {
-            http.removeById(this.itemsCopy.indexOf(item)+1);
+            http.removeById(this.items.indexOf(item)+1);
             this.items.splice(index, 1);
         }
         this.save();
     }
 
+    removeAll() {
+        this.items = [];
+        this.save();
+    }
+
     save() {
-        localStorage.setItem('readItemList', JSON.stringify(this.items));
+        localStorage.setItem('readItemList', JSON.stringify(this.items)); // stringify - преобразование объекта в строку
     }
 }
 

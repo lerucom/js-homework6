@@ -33,16 +33,6 @@ export class Http {
         });
     }
 
-    changeLink(item){
-        return fetch(`${this.url}/${item}`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(item)
-        });
-    }
-
     deleteAll(){
         return fetch(`${this.url}`, {
             method: 'DELETE'
