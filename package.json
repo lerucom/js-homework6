@@ -4,9 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "serve": "browser-sync start -s \"src\" -f \".\"",
-    "test": "jest",
-    "test-coverage": "jest --coverage"
+    "frontend": "browser-sync start -s \"frontend/src\" -f \".\"",
+    "test": "exit 0",
+    "backend": "nodemon ./backend/rest.js"
   },
   "babel": {
     "presets": [
@@ -22,5 +22,9 @@
     "babel-jest": "^23.6.0",
     "browser-sync": "^2.26.3",
     "jest": "^23.6.0"
+  },
+  "dependencies": {
+    "restify": "^8.3.0",
+    "restify-errors": "^7.0.0"
   }
 }
