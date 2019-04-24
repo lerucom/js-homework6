@@ -62,7 +62,7 @@ server.post('/items/:item', (req, res, next) => {
     items[req.body.id-1].name = req.body.name;
     items[req.body.id-1].tags = req.body.tags;
     items[req.body.id-1].url = req.body.url;
-    // items[req.body.id-1].location = req.body.location;
+    items[req.body.id-1].done = req.body.done;
     console.log ('NEW OBJECT', items[req.body.id-1]);
     console.log('NEW MASSIVE');
     console.log(items);

@@ -1,7 +1,7 @@
 import {Http} from "./http.js";
 import {ReadItemList} from "./lib.js";
 
-const http = new Http('https://readlater-server.herokuapp.com/items');
+const http = new Http('https://nodejs-read-later.herokuapp.com/items');
 
 const readItemList = new ReadItemList();
 
